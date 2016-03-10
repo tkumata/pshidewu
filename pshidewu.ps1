@@ -37,7 +37,7 @@ KB3022345 テレメトリ関連
  #>
 
 param (
-    [string]$check = $false,
+    [string]$check,
     [string[]]$noWUKBs = @("KB2952664","KB2990214","KB3021917","KB3035583","KB3035583","KB3050265","KB3065987","KB3068708","KB3075249","KB3075851","KB3080149","KB3083324","KB3083710","KB3102810","KB3112343","KB3123862","KB3135445","KB3138612","KB2977759","KB3022345")
 )
 
@@ -93,22 +93,28 @@ function hiddenUpdatesList() {
     echo "Total: $n hidden."
 }
 
-if ($check -eq "installed") {
-    toUninstall
-} elseif ($check -eq "new") {
-    toHidden
-} elseif ($check -eq "all") {
-    toUninstall
-    Start-Sleep -s 10
-    toHidden
-} elseif ($check -eq "hiddenlist") {
-    hiddenUpdatesList
-} else {
-    echo "Usage:"
-    echo "    Uninstall unnecessary updates in installed updates."
-    echo "    ./pshidewu.ps1 -check installed"
-    echo "    To hide unnecessary updates in new updates."
-    echo "    ./pshidewu.ps1 -check new"
+switch ($check) {
+    "installed" {
+        toUninstall
+    }
+    "new" {
+        toHidden
+    }
+    "hiddenlist" {
+        hiddenUpdatesList
+    }
+    "all" {
+        toUninstall
+        Start-Sleep -s 60
+        toHidden
+    }
+    default {
+        echo "Usage:"
+        echo "Uninstall unnecessary updates in installed updates."
+        echo "    ./pshidewu.ps1 -check installed"
+        echo "To hide unnecessary updates in new updates."
+        echo "    ./pshidewu.ps1 -check new"
+    }
 }
 
 # $hiddenItems = Get-WUList -IsHidden -Verbose
