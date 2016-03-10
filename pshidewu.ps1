@@ -8,7 +8,7 @@
  # Require:
  #     PSWindowsUpdate module for PowerShell
  #
- # いらんこリスト  last modify at 2016/03/02
+ # いらんこリスト last modify at 2016/03/02
 
 KB2952664 Win10アプグレ関連(Application Experience) (Win7用)
 KB2990214 Win10アプグレ関連(Win7用WindowsUpdateクライアント 詳細は ※備考 参照)
@@ -36,17 +36,17 @@ KB3022345 テレメトリ関連
 
  #>
 
+param (
+    [string]$check = $false,
+    [string[]]$noWUKBs = @("KB2952664","KB2990214","KB3021917","KB3035583","KB3035583","KB3050265","KB3065987","KB3068708","KB3075249","KB3075851","KB3080149","KB3083324","KB3083710","KB3102810","KB3112343","KB3123862","KB3135445","KB3138612","KB2977759","KB3022345")
+)
+
 Import-Module PSWindowsUpdate
 
 $ServiceID = Get-WUServiceManager | Select ServiceID
 echo $ServiceID
 # Add-WUServiceManager -ServiceID 7971f918-a847-4430-9279-4a52d1efe18d -Confirm:$false
 # Add-WUServiceManager -ServiceID 9482f4b4-e343-43b6-b170-9a65bc822c77 -Confirm:$false
-
-param (
-    [string]$check = $false,
-    [string[]]$noWUKBs = @("KB2952664","KB2990214","KB3021917","KB3035583","KB3035583","KB3050265","KB3065987","KB3068708","KB3075249","KB3075851","KB3080149","KB3083324","KB3083710","KB3102810","KB3112343","KB3123862","KB3135445","KB3138612","KB2977759","KB3022345")
-)
 
 function toUninstall() {
     echo "Searching unnecessary already installed updates for Windows7."
@@ -97,11 +97,11 @@ if ($check -eq "installed") {
     Start-Sleep -s 10
     toHidden
 } else {
-    echo "    Usage:"
-    echo "        Uninstall unnecessary updates in installed updates."
-    echo "        ./pshidewu.ps1 -check installed"
-    echo "        To hide unnecessary updates in new updates."
-    echo "        ./pshidewu.ps1 -check new"
+    echo "Usage:"
+    echo "    Uninstall unnecessary updates in installed updates."
+    echo "    ./pshidewu.ps1 -check installed"
+    echo "    To hide unnecessary updates in new updates."
+    echo "    ./pshidewu.ps1 -check new"
 }
 
 # $hiddenItems = Get-WUList -IsHidden -Verbose
