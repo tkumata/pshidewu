@@ -17,3 +17,4 @@ PS> pshidewu.ps1 -check new
 ```
 
 ## Notes
+You will notice difference Get-WUList -IsHidden and GUI. However it is no problem.
