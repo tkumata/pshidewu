@@ -1,4 +1,5 @@
-# PowerShell script as uninstall or hide unnecessary Windows Update (KBxxxxx)
+# Uninstall or hide unnecessary Windows Update (KBxxxxx)
+My PC made by Core i5-750 and DDR3 memory and bad sector increased 5400rpm HDD. I will upgrade to Windows 10 but my PC is old. Then when I change CPU and M/B, re-activation is bothersome. However Microsoft remind me quite often.
 
 ## Require
 - Windows 7
@@ -8,12 +9,12 @@
 Search and uninstall in already installed updates.
 ```
 Open PowerShell as administrator and run following,
-PS> pshidewu.ps1 -check installed
+PS> /path/to/pshidewu.ps1 -check installed
 ```
 Search and hide in Windows Update List.
 ```
 Open PowerShell as administrator and run following,
-PS> pshidewu.ps1 -check new
+PS> /path/to/pshidewu.ps1 -check new
 ```
 
 ## Notes
