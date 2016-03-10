@@ -23,4 +23,4 @@ You will notice difference Get-WUList -IsHidden and GUI. However it is no proble
 1. Restore all hidden updates in GUI, "Control Panel > Windows Update > Restore hidden updates".
 2. Execute this script, "pshidewu.ps1 -check new" as administrator.
 
-By the way, Windows 7 does not have Unblock-File. Please ignore Unblock-File commandlet error. 
+By the way, this script gets Unblock-File commandlet error. Standard Windows 7 does not have Unblock-File. So please ignore this error.
