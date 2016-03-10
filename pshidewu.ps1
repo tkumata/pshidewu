@@ -44,7 +44,7 @@ param (
 Import-Module PSWindowsUpdate
 
 $ServiceID = Get-WUServiceManager | Select ServiceID
-echo $ServiceID
+# echo $ServiceID
 # Add-WUServiceManager -ServiceID 7971f918-a847-4430-9279-4a52d1efe18d -Confirm:$false
 # Add-WUServiceManager -ServiceID 9482f4b4-e343-43b6-b170-9a65bc822c77 -Confirm:$false
 
@@ -85,7 +85,12 @@ function toHidden() {
 
 function hiddenUpdatesList() {
     echo "Checking hidden updates."
-    Get-WUList -IsHidden
+    $hiddenUpdates = Get-WUList -IsHidden
+    foreach ($hiddenUpdate in $hiddenUpdates) {
+        echo $hiddenUpdate
+    }
+    $n = $hiddenUpdates.Length
+    echo "Total: $n hidden."
 }
 
 if ($check -eq "installed") {
@@ -96,6 +101,8 @@ if ($check -eq "installed") {
     toUninstall
     Start-Sleep -s 10
     toHidden
+} elseif ($check -eq "hiddenlist") {
+    hiddenUpdatesList
 } else {
     echo "Usage:"
     echo "    Uninstall unnecessary updates in installed updates."
