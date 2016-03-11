@@ -26,10 +26,7 @@ This software is release under the MIT License, please see [MIT](http://opensour
 [tkumata](https://github.com/tkumata)
 
 ## Notes
-You will notice difference Get-WUList -IsHidden and GUI. However it is no problem. If you hope same number between CLI and GUI. You do following,
-
-1. Restore all hidden updates in GUI, "Control Panel > Windows Update > Restore hidden updates".
-2. Execute this script, "pshidewu.ps1 -check new" as administrator.
+You will notice difference Get-WUList -IsHidden and GUI. However it is no problem.
 
 By the way, this script gets Unblock-File commandlet error. Standard Windows 7 does not have Unblock-File. So please ignore this error.
 
