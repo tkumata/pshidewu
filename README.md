@@ -17,6 +17,14 @@ Open PowerShell as administrator and run following,
 PS> /path/to/pshidewu.ps1 -check new
 ```
 
+## License
+Copyright (c) 2016 tkumata
+
+This software is release under the MIT License, please see [MIT](http://opensource.org/licenses/mit-license.php)
+
+## Author
+[tkumata](https://github.com/tkumata)
+
 ## Notes
 You will notice difference Get-WUList -IsHidden and GUI. However it is no problem. If you hope same number between CLI and GUI. You do following,
 
@@ -24,3 +32,5 @@ You will notice difference Get-WUList -IsHidden and GUI. However it is no proble
 2. Execute this script, "pshidewu.ps1 -check new" as administrator.
 
 By the way, this script gets Unblock-File commandlet error. Standard Windows 7 does not have Unblock-File. So please ignore this error.
+
+KB3035583, KB3135445 are trap!!! Please hide this manually. Then please execute this script.

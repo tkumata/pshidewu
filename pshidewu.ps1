@@ -38,7 +38,7 @@ KB3022345 テレメトリ関連
 
 param (
     [string]$check,
-    [string[]]$noWUKBs = @("KB2952664","KB2990214","KB3021917","KB3035583","KB3035583","KB3050265","KB3065987","KB3068708","KB3075249","KB3075851","KB3080149","KB3083324","KB3083710","KB3102810","KB3112343","KB3123862","KB3135445","KB3138612","KB2977759","KB3022345")
+    [string[]]$noWUKBs = @("KB2952664","KB2990214","KB3021917","KB3035583","KB3050265","KB3065987","KB3068708","KB3075249","KB3075851","KB3080149","KB3083324","KB3083710","KB3102810","KB3112343","KB3123862","KB3135445","KB3138612","KB2977759","KB3022345")
 )
 
 Import-Module PSWindowsUpdate
@@ -50,17 +50,21 @@ $ServiceID = Get-WUServiceManager | Select ServiceID
 
 function toUninstall() {
     echo "Searching unnecessary already installed updates for Windows7."
-    $flag = 0
+    $local:flag = 0
+    $local:findKBs = @()
     Get-WUList -IsInstalled -MicrosoftUpdate -Verbose |
         % {
             $installedKB = $_.KB
             if ($noWUKBs -contains $installedKB) {
                 echo "Found unnecessary $installedKB. Uninstall this."
+                $findKBs += $installedKB
                 $flag = 1
-                Get-WUUninstall -KBArticleID $installedKB -confirm:$false
-                Start-Sleep -s 10
             }
         }
+    
+    if ($findKBs.Length -gt 0) {
+        Get-WUUninstall -KBArticleID $findKBs -confirm:$false
+    }
     
     if ($flag -eq 1) {
         echo "Next, please execute `"pshidewu.ps1 -check new`" for to hide."
@@ -71,15 +75,21 @@ function toUninstall() {
 
 function toHidden() {
     echo "Searching unnecessary updates in new updates for Windows7."
+    $local:findKBs = @()
     Get-WUList -IsNotHidden -MicrosoftUpdate -Verbose |
         % {
             $notHiddenKB = $_.KB
             if ($noWUKBs -contains $notHiddenKB) {
                 echo "Found unnecessary $notHiddenKB. Hidden this."
-                Hide-WUUpdate -KBArticleID $notHiddenKB -confirm:$false
-                Start-Sleep -s 10
+                $findKBs += $notHiddenKB
+                $_.IsHidden = $true
             }
         }
+    
+    if ($findKBs.Length -gt 0) {
+        echo "Hidding updates..."
+        Hide-WUUpdate -KBArticleID $findKBs -confirm:$false
+    }
     echo "Searching finished."
 }
 
