@@ -6,7 +6,7 @@ My PC is made by Core i5 750 and DDR3 memory and bad sector increased 5400rpm HD
 - Installing PowerShell module, PSWindowsUpdate.
 
 ## Install PSWindowsUpdate
-1. Dlownload PSWindowsUpdate.zip.
+1. Dlownload [PSWindowsUpdate.zip](https://gallery.technet.microsoft.com/scriptcenter/2d191bcd-3308-4edd-9de2-88dff796b0bc).
 2. Open property and click Unblock.
 3. Extract zip file.
 4. Move PS module dir. (eg, C:\Windows\System32\WindowsPowerShell\v1.0\Modules
