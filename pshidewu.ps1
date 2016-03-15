@@ -52,7 +52,7 @@ function toUninstall() {
     echo "Searching unnecessary already installed updates for Windows7."
     $local:flag = 0
     $local:findKBs = @()
-    Get-WUList -IsInstalled -MicrosoftUpdate -Verbose |
+    Get-WUList -IsInstalled -MicrosoftUpdate -Verbose -confirm:$false |
         % {
             $installedKB = $_.KB
             if ($noWUKBs -contains $installedKB) {
@@ -76,7 +76,7 @@ function toUninstall() {
 function toHidden() {
     echo "Searching unnecessary updates in new updates for Windows7."
     $local:findKBs = @()
-    Get-WUList -IsNotHidden -MicrosoftUpdate -Verbose |
+    Get-WUList -IsNotHidden -MicrosoftUpdate -Verbose -confirm:$false |
         % {
             $notHiddenKB = $_.KB
             if ($noWUKBs -contains $notHiddenKB) {
@@ -115,7 +115,7 @@ switch ($check) {
     }
     "all" {
         toUninstall
-        Start-Sleep -s 60
+        Start-Sleep -s 20
         toHidden
     }
     default {
