@@ -30,6 +30,8 @@ By the way, this script gets Unblock-File commandlet error. Standard Windows 7 d
 
 KB3035583, KB3135445 are trap!!! Please hide this manually. Then please execute this script.
 
+[Disable upgrade to Windows 10, MS Official Site](https://sway.com/JZF2z8BPmK3TChUs)
+
 ## License
 Copyright (c) 2016 tkumata
 
