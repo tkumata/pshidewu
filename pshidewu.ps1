@@ -44,6 +44,7 @@ param (
 Import-Module PSWindowsUpdate
 
 $ServiceID = Get-WUServiceManager | Select ServiceID
+$ServiceID = Get-WUServiceManager | Select ServiceID
 # echo $ServiceID
 # Add-WUServiceManager -ServiceID 7971f918-a847-4430-9279-4a52d1efe18d -Confirm:$false
 # Add-WUServiceManager -ServiceID 9482f4b4-e343-43b6-b170-9a65bc822c77 -Confirm:$false
@@ -126,19 +127,3 @@ switch ($check) {
         echo "    ./pshidewu.ps1 -check new"
     }
 }
-
-# $hiddenItems = Get-WUList -IsHidden -Verbose
-# foreach ($hiddenItem in $hiddenItems) {
-#     $hiddenKB = $hiddenItem.KB
-#     if ($noWUKBs -contains $hiddenKB) {
-#         echo "$hiddenKB is hidden already."
-#     } else {
-#         echo "$hiddenKB is not hidden yet."
-#     }
-# }
-
-# if ($noWUKBs.Length -eq $hiddenItems.Length) {
-#     echo "OK"
-# } else {
-#     Hide-WUUpdate -KBArticleID $noWUKBs -confirm:$false
-# }
