@@ -44,8 +44,11 @@ param (
 Import-Module PSWindowsUpdate
 
 $ServiceID = Get-WUServiceManager | Select ServiceID
+
+# workaround bug that prompt does not return.
 $ServiceID = Get-WUServiceManager | Select ServiceID
-# echo $ServiceID
+echo $ServiceID
+
 # Add-WUServiceManager -ServiceID 7971f918-a847-4430-9279-4a52d1efe18d -Confirm:$false
 # Add-WUServiceManager -ServiceID 9482f4b4-e343-43b6-b170-9a65bc822c77 -Confirm:$false
 
