@@ -29,6 +29,7 @@ KB3102810 Win7用WindowsUpdateからWin10にアプグレ時の不具合の修正
 KB3112343 Win7用WindowsUpdateクライアント Win10アプグレ関連+KB3050265の不具合修正
 KB3135445 Win7用WindowsUpdateクライアント
 KB3138612 Win7用WindowsUpdateクライアント
+KB3139929 IE11 patch with Win10アプグレ関連
 
 2016/04/13 追記
 KB3148198 IE11 patch with Win10アプグレ関連
@@ -36,52 +37,38 @@ KB2965664 Win10アプグレ関連
  #>
 param (
     [string]$check,
-    [string[]]$noWUKBs = @("KB2952664","KB2990214","KB3021917","KB3035583","KB3050265","KB3065987","KB3068708","KB3075249","KB3075851","KB3080149","KB3083324","KB3083710","KB3102810","KB3112343","KB3123862","KB3135445","KB3138612","KB2977759","KB3022345","KB3148198","KB2965664")
+    [string[]]$noKBs = @("KB2952664","KB2990214","KB3021917","KB3035583","KB3050265","KB3065987","KB3068708","KB3075249","KB3075851","KB3080149","KB3083324","KB3083710","KB3102810","KB3112343","KB3123862","KB3135445","KB3138612","KB2977759","KB3022345","KB3139929","KB3148198","KB2965664")
 )
 
 Import-Module PSWindowsUpdate
-
 $ServiceID = Get-WUServiceManager | Select ServiceID
 
 # workaround bug that prompt does not return.
 $ServiceID = Get-WUServiceManager | Select ServiceID
 echo $ServiceID
 
-# Add-WUServiceManager -ServiceID 7971f918-a847-4430-9279-4a52d1efe18d -Confirm:$false
-# Add-WUServiceManager -ServiceID 9482f4b4-e343-43b6-b170-9a65bc822c77 -Confirm:$false
-
 function toUninstall() {
-    echo "Searching unnecessary already installed updates for Windows7."
-    $local:flag = 0
-    $local:findKBs = @()
-    Get-WUList -IsInstalled -MicrosoftUpdate -Verbose -confirm:$false |
-        % {
-            $installedKB = $_.KB
-            if ($noWUKBs -contains $installedKB) {
-                echo "Found unnecessary $installedKB. Uninstall this."
-                $findKBs += $installedKB
-                $flag = 1
-            }
+    echo "Uninstalling unnecessary already installed updates for Windows7..."
+    foreach($noKB in $noKBs) {
+        $articleID = $noKB -replace "KB", ""
+        echo $articleID
+        $UninstallCommand = "wusa.exe /uninstall /kb:$articleID /quiet /norestart"
+        Invoke-Expression $UninstallCommand
+        echo "Waiting for update removal to finish ..."
+        while (@(Get-Process wusa -ErrorAction SilentlyContinue).Count -ne 0) {
+            Start-Sleep -s 10
         }
-    
-    if ($findKBs.Length -gt 0) {
-        Get-WUUninstall -KBArticleID $findKBs -confirm:$false
     }
-    
-    if ($flag -eq 1) {
-        echo "Next, please execute `"pshidewu.ps1 -check new`" for to hide."
-    }
-    
-    echo "Searching finished."
+    echo "Uninstalling finished."
 }
 
 function toHidden() {
     echo "Searching unnecessary updates in new updates for Windows7."
     $local:findKBs = @()
-    Get-WUList -IsNotHidden -MicrosoftUpdate -Verbose -confirm:$false |
+    Get-WUList -IsNotHidden -WindowsUpdate -confirm:$false |
         % {
             $notHiddenKB = $_.KB
-            if ($noWUKBs -contains $notHiddenKB) {
+            if ($noKBs -contains $notHiddenKB) {
                 echo "Found unnecessary $notHiddenKB. Hidden this."
                 $findKBs += $notHiddenKB
                 $_.IsHidden = $true
