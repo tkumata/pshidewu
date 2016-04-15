@@ -48,6 +48,8 @@ $ServiceID = Get-WUServiceManager | Select ServiceID
 echo $ServiceID
 
 function toUninstall() {
+    [string]$local:articleID
+    [string]$local:UninstallCommand
     echo "Uninstalling unnecessary already installed updates for Windows7..."
     foreach($noKB in $noKBs) {
         $articleID = $noKB -replace "KB", ""
@@ -55,11 +57,12 @@ function toUninstall() {
         $UninstallCommand = "wusa.exe /uninstall /kb:$articleID /quiet /norestart"
         Invoke-Expression $UninstallCommand
         echo "Waiting for update removal to finish ..."
-        while (@(Get-Process wusa -ErrorAction SilentlyContinue).Count -ne 0) {
+        while(@(Get-Process wusa -ErrorAction SilentlyContinue).Count -ne 0) {
             Start-Sleep -s 10
         }
     }
     echo "Uninstalling finished."
+    echo "Please reboot Windows7."
 }
 
 function toHidden() {
@@ -74,7 +77,6 @@ function toHidden() {
                 $_.IsHidden = $true
             }
         }
-    
     if ($findKBs.Length -gt 0) {
         echo "Hidding updates..."
         Hide-WUUpdate -KBArticleID $findKBs -confirm:$false
@@ -100,19 +102,15 @@ switch ($check) {
     "new" {
         toHidden
     }
-    "hiddenlist" {
-        hiddenUpdatesList
-    }
     "all" {
         toUninstall
-        Start-Sleep -s 20
+        Start-Sleep -s 5
         toHidden
     }
     default {
         echo "Usage:"
-        echo "Uninstall unnecessary updates in installed updates."
         echo "    ./pshidewu.ps1 -check installed"
-        echo "To hide unnecessary updates in new updates."
         echo "    ./pshidewu.ps1 -check new"
+        echo "    ./pshidewu.ps1 -check all"
     }
 }
