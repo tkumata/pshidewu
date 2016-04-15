@@ -29,6 +29,8 @@ KB3102810 Win7用WindowsUpdateからWin10にアプグレ時の不具合の修正
 KB3112343 Win7用WindowsUpdateクライアント Win10アプグレ関連+KB3050265の不具合修正
 KB3135445 Win7用WindowsUpdateクライアント
 KB3138612 Win7用WindowsUpdateクライアント
+
+2016/03/12 追記
 KB3139929 IE11 patch with Win10アプグレ関連
 
 2016/04/13 追記
