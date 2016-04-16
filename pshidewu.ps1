@@ -36,65 +36,84 @@ KB3139929 IE11 patch with Win10アプグレ関連
 2016/04/13 追記
 KB3148198 IE11 patch with Win10アプグレ関連
 KB2965664 Win10アプグレ関連
+
  #>
+
 param (
     [string]$check,
     [string[]]$noKBs = @("KB2952664","KB2990214","KB3021917","KB3035583","KB3050265","KB3065987","KB3068708","KB3075249","KB3075851","KB3080149","KB3083324","KB3083710","KB3102810","KB3112343","KB3123862","KB3135445","KB3138612","KB2977759","KB3022345","KB3139929","KB3148198","KB2965664")
 )
 
 Import-Module PSWindowsUpdate
-$ServiceID = Get-WUServiceManager | Select ServiceID
 
-# workaround bug that prompt does not return.
 $ServiceID = Get-WUServiceManager | Select ServiceID
-echo $ServiceID
+Write-Host $ServiceID
 
 function toUninstall() {
     [string]$local:articleID
     [string]$local:UninstallCommand
-    echo "Uninstalling unnecessary already installed updates for Windows7..."
+    
+    Write-Host "Uninstalling unnecessary already installed updates for Windows7."
+    
     foreach($noKB in $noKBs) {
+        Write-Host "Uninstalling $noKB... Please wait."
+        
         $articleID = $noKB -replace "KB", ""
-        echo $articleID
         $UninstallCommand = "wusa.exe /uninstall /kb:$articleID /quiet /norestart"
+        
         Invoke-Expression $UninstallCommand
-        echo "Waiting for update removal to finish ..."
+        
         while(@(Get-Process wusa -ErrorAction SilentlyContinue).Count -ne 0) {
-            Start-Sleep -s 10
+            Write-Host "#" -NoNewline
+            Start-Sleep -s 1
         }
+        
+        Write-Host ""
     }
-    echo "Uninstalling finished."
-    echo "Please reboot Windows7."
+    
+    Write-Host "Uninstalling finished."
+    Write-Host "Please reboot Windows7."
 }
 
 function toHidden() {
-    echo "Searching unnecessary updates in new updates for Windows7."
-    $local:findKBs = @()
+    [string[]]$local:findKBs = @()
+    [int]$local:reqReboot = 0
+    
+    Write-Host "Searching unnecessary updates in new updates for Windows7."
+    
     Get-WUList -IsNotHidden -WindowsUpdate -confirm:$false |
         % {
             $notHiddenKB = $_.KB
+            
             if ($noKBs -contains $notHiddenKB) {
-                echo "Found unnecessary $notHiddenKB. Hidden this."
+                Write-Host ""
+                Write-Host "Found unnecessary $notHiddenKB. Hidden this."
                 $findKBs += $notHiddenKB
                 $_.IsHidden = $true
             }
         }
+    
     if ($findKBs.Length -gt 0) {
-        echo "Hidding updates..."
+        $reqReboot = 1
+        Write-Host "Hidding updates... Please wait."
         Hide-WUUpdate -KBArticleID $findKBs -confirm:$false
     }
-    echo "Searching finished."
-    echo "Please reboot Windows7."
+    
+    Write-Host "Hidding updates finished."
+    
+    if ($reqReboot -eq 1) {
+        Write-Host "Please reboot Windows7."
+    }
 }
 
 function hiddenUpdatesList() {
-    echo "Checking hidden updates."
+    Write-Host "Checking hidden updates."
     $hiddenUpdates = Get-WUList -IsHidden
     foreach ($hiddenUpdate in $hiddenUpdates) {
-        echo $hiddenUpdate
+        Write-Host $hiddenUpdate
     }
     $n = $hiddenUpdates.Length
-    echo "Total: $n hidden."
+    Write-Host "Total: $n hidden."
 }
 
 switch ($check) {
@@ -110,9 +129,9 @@ switch ($check) {
         toHidden
     }
     default {
-        echo "Usage:"
-        echo "    ./pshidewu.ps1 -check installed"
-        echo "    ./pshidewu.ps1 -check new"
-        echo "    ./pshidewu.ps1 -check all"
+        Write-Host "Usage:"
+        Write-Host "    ./pshidewu.ps1 -check installed"
+        Write-Host "    ./pshidewu.ps1 -check new"
+        Write-Host "    ./pshidewu.ps1 -check all"
     }
 }
