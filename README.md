@@ -1,13 +1,11 @@
 # Uninstall and hide unnecessary Windows Update (KBxxxxx)
-My PC is made by Core i5 750 and DDR3 memory and bad sector increased 5400rpm HDD. I will change PC parts and I will upgrade to Windows 10. But my PC is old as menthoned in the introduction. Then when I have changed CPU and M/B and so on, re-activation is bothersome. However Microsoft remind me quite often. Moreover, Microsoft trap some update data. So I wrote this script. I will protect Windows 7 absolutely until changing PC parts.
-
-Or,
-
-MS: Upgrade to Windows 10.
+MS: Upgrade to Windows 10!!!!!
 
 PC Vender: Your PC is not supported. DO NOT upgrade.
 
 User: !?
+
+This script uninstall or hide unnecessary Windows Updates.
 
 ## Require
 - Windows 7
@@ -42,6 +40,9 @@ You will notice difference Get-WUList -IsHidden and GUI. However it is no proble
 By the way, this script gets Unblock-File commandlet error. Standard Windows 7 does not have Unblock-File. So please ignore this error.
 
 [Disable upgrade to Windows 10, MS Official Site](https://sway.com/JZF2z8BPmK3TChUs)
+
+## Monologue
+My PC is made by Core i5 750 and DDR3 memory and bad sector increased 5400rpm HDD. I will change PC parts and I will upgrade to Windows 10. But my PC is old as menthoned in the introduction. Then when I have changed CPU and M/B and so on, re-activation is bothersome. However Microsoft remind me quite often. Moreover, Microsoft trap some update data. So I wrote this script. I will protect Windows 7 absolutely until changing PC parts.
 
 ## License
 Copyright (c) 2016 tkumata
