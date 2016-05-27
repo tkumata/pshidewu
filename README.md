@@ -1,4 +1,5 @@
 # Uninstall and hide unnecessary Windows Update (KBxxxxx)
+
 MS: Upgrade to Windows 10!!!!!
 
 PC Vender: Your PC is not supported. DO NOT upgrade.
@@ -6,6 +7,8 @@ PC Vender: Your PC is not supported. DO NOT upgrade.
 User: !?
 
 This script uninstall or hide unnecessary Windows Updates.
+
+I have given up to buy new CPU and mainboard etc. So I stop this project. Thanks.
 
 ## Require
 - Windows 7
